@@ -23,17 +23,20 @@ open class MarkdownView: UIView {
     }
 
   }
-
+    
   @objc public var onTouchLink: ((URLRequest) -> Bool)?
 
   @objc public var onRendered: ((CGFloat) -> Void)?
-
-  public convenience init() {
-    self.init(frame: CGRect.zero)
+  var winFrame:CGRect = CGRect.zero
+    
+  public convenience init(bounds:CGRect) {
+    self.init(frame: bounds)
   }
 
   override init (frame: CGRect) {
+    self.winFrame = frame
     super.init(frame : frame)
+    
   }
 
   public required init?(coder aDecoder: NSCoder) {
@@ -64,16 +67,25 @@ open class MarkdownView: UIView {
 
       let configuration = WKWebViewConfiguration()
       configuration.userContentController = controller
-
-      let wv = WKWebView(frame: self.bounds, configuration: configuration)
+        
+//      let wv = WKWebView(frame: self.bounds, configuration: configuration)
+      //需要定位呀
+      let wv = WKWebView(frame: winFrame, configuration: configuration)
       wv.scrollView.isScrollEnabled = self.isScrollEnabled
-      wv.translatesAutoresizingMaskIntoConstraints = false
+      wv.translatesAutoresizingMaskIntoConstraints = true
       wv.navigationDelegate = self
+      
       addSubview(wv)
-      wv.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
-      wv.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
-      wv.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
-      wv.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
+//      wv.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+//      wv.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+//      wv.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
+//      wv.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
+      
+//        wv.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+//        wv.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+//        wv.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
+//        wv.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
+      
       wv.isOpaque = false
       wv.backgroundColor = .clear
       wv.scrollView.backgroundColor = .clear
@@ -87,6 +99,7 @@ open class MarkdownView: UIView {
   }
 
   private func escape(markdown: String) -> String? {
+   // return markdown
     return markdown.addingPercentEncoding(withAllowedCharacters: CharacterSet.alphanumerics)
   }
 
